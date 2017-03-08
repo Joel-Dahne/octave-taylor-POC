@@ -20,7 +20,7 @@
 ## Keywords: taylor arithmetic
 ## Created: 2017-03-05
 
-function x = taylor (coefs, order)
+function x = taylor (coefs, order, type)
 
   x = class (struct ("coefs", [1]), "taylor");
   
@@ -64,6 +64,17 @@ function x = taylor (coefs, order)
         ## create a constant with the given order
         coefs = resize (coefs, 1, order + 1);
         x = class (struct ("coefs", coefs), "taylor");
+      endif
+    case 3
+      if (strcmp (type, "var"))
+        coefs (2) = 1;
+        coefs (3:order) = 0;
+        x = class (struct ("coefs", coefs), "taylor");
+        return
+      elseif (strcmp(type, "const"))
+        coefs (2:order) = 0;
+        x = class (struct ("coefs", coefs), "taylor");
+        return
       endif
   endswitch
   
