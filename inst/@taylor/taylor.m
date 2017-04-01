@@ -57,15 +57,6 @@ function x = taylor (value, order, type)
           value.coefs = resize (value.coefs, order + 1, 1);
           x = value;
           return
-          if (order + 1 > length (value.coefs))
-            value.coefs(order + 1) = 0;
-            x = value;
-            return
-          else
-            value.coefs = value.coefs(1:order + 1);
-            x = value;
-            return
-          endif
         endif
       endif
 
@@ -78,14 +69,12 @@ function x = taylor (value, order, type)
     case 3
       if (isscalar (value))
         if (strcmp (type, "var"))
-          coefs = zeros (order + 1, 1);
-          coefs(1) = value;
+          coefs = resize (value, order + 1, 1);
           coefs(2) = 1;
           x = class (struct ("coefs", coefs), "taylor");
           return
         elseif (strcmp(type, "const"))
-          coefs = zeros (order + 1, 1);
-          coefs(1) = value;
+          coefs = resize (value, order + 1, 1);
           x = class (struct ("coefs", coefs), "taylor");
           return
         endif
