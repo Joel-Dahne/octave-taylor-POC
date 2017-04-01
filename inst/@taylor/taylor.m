@@ -15,67 +15,98 @@
 
 ## -*- texinfo -*-
 ## @documentencoding UTF-8
+## @deftypeop Constructor {@@taylor} @var{X} = taylor ()
+## @deftypeopx Constructor {@@taylor} @var{X} = taylor (@var{V})
+## @deftypeopx Constructor {@@taylor} @var{X} = taylor (@var{C}, @var{dim})
+## @deftypeopx Constructor {@@taylor} @var{X} = taylor (@var{C}, @var{dim}, @var{type})
+##
+## Create a Taylor series. 
 
 ## Author: Joel Dahne
 ## Keywords: taylor arithmetic
 ## Created: 2017-03-05
 
-function x = taylor (coefs, order, type)
+function x = taylor (value, order, type)
 
-  x = class (struct ("coefs", [1]), "taylor");
   
   switch nargin
     case 0
-      ## order 1 constant
+      ## order 1 variable
+      x = class (struct ("coefs", [0; 1]), "taylor");
       return
       
     case 1
-      if (isa (coefs, "taylor"))
-        ## already a taylor expansion
-        x = coefs;
+      if (isa (value, "taylor"))
+        ## Already a taylor expansion
+        x = value;
         return
       endif
 
-      if (isvector (coefs))
-        ## create the taylor expansion with coefficients from input
-        x = class (struct ("coefs", coefs), "taylor");
+      if (isvector (value))
+        ## Create the taylor expansion with coefficients from input
+        x = class (struct ("coefs", vec (value)), "taylor");
         return
       endif
 
       print_usage ()
       return
     case 2
-      if (isa (coefs, "taylor"))
+      if (isa (value, "taylor"))
         if (isindex (order + 1))
           ## Change the order of the expansion
-          if (order + 1 > length (coefs.coefs))
-            coefs.coefs(order + 1) = 0;
-            x = coefs;
+          value.coefs = resize (value.coefs, order + 1, 1);
+          x = value;
+          return
+          if (order + 1 > length (value.coefs))
+            value.coefs(order + 1) = 0;
+            x = value;
             return
           else
-            coefs.coefs = coefs.coefs(1:order + 1);
-            x = coefs;
+            value.coefs = value.coefs(1:order + 1);
+            x = value;
             return
           endif
         endif
       endif
 
-      if (isscalar (coefs))
-        ## create a constant with the given order
-        coefs = resize (coefs, 1, order + 1);
-        x = class (struct ("coefs", coefs), "taylor");
+      if (isscalar (value))
+        ## Create a constant with the given order
+        value = resize (value, order + 1, 1);
+        x = class (struct ("coefs", value), "taylor");
+        return
       endif
     case 3
-      if (strcmp (type, "var"))
-        coefs (2) = 1;
-        coefs (3:order) = 0;
-        x = class (struct ("coefs", coefs), "taylor");
-        return
-      elseif (strcmp(type, "const"))
-        coefs (2:order) = 0;
-        x = class (struct ("coefs", coefs), "taylor");
-        return
+      if (isscalar (value))
+        if (strcmp (type, "var"))
+          coefs = zeros (order + 1, 1);
+          coefs(1) = value;
+          coefs(2) = 1;
+          x = class (struct ("coefs", coefs), "taylor");
+          return
+        elseif (strcmp(type, "const"))
+          coefs = zeros (order + 1, 1);
+          coefs(1) = value;
+          x = class (struct ("coefs", coefs), "taylor");
+          return
+        endif
       endif
   endswitch
   
 endfunction
+
+%!# Empty constructor
+%!
+
+%!# Vector
+%!
+
+%!# Taylor
+%!
+
+%!# Taylor + dim
+
+%!# Constant + dim
+
+%!# Create variable
+
+%!# Create constant
