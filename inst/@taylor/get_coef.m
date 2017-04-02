@@ -34,12 +34,16 @@
 
 function d = get_coef (x, n)
 
-  if (nargin ~= 2)
+  if (nargin ~= 2 && nargin ~= 1)
     print_usage ();
     return
   endif
 
-  d = x.coefs(n + 1);
+  if (nargin == 1)
+    n = 0:get_order (x);
+  endif
 
+  d = x.coefs(n+1);
+  
   return
 endfunction

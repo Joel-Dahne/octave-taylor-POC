@@ -34,10 +34,16 @@
 
 function d = get_derivative (x, n)
 
-  if (nargin ~= 2)
+  if (nargin ~= 2 && nargin ~= 1)
     print_usage ();
     return
   endif
+
+  if (nargin == 1)
+    n = 0:get_order (x);
+  endif
+
+  n = vec (n, 1);
 
   d = x.coefs(n + 1);
 
