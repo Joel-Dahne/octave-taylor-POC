@@ -42,21 +42,20 @@ function x = log (x)
     return
   endif
 
-  order = length (x.coefs);
+  order = get_order (x);
 
   log_coefs = log (x.coefs (1));
-  log_coefs (2:order) = 0;
+  log_coefs = resize (log_coefs, order+1, 1);
   
-  for k = [2:order]
-    for i = [2:k - 1]
-      log_coefs (k) -= (i - 1) .* log_coefs (i) .* x.coefs (k - i + 1);
+  for k = [1:order]
+    for i = [1:k - 1]
+      log_coefs (k+1) -= i .* log_coefs (i+1) .* x.coefs (k-i+1);
     endfor
-    log_coefs (k) = log_coefs (k) ./ (k - 1);
-    log_coefs (k) += x.coefs (k);
+    log_coefs (k+1) = log_coefs (k+1) ./ k;
+    log_coefs (k+1) += x.coefs (k+1);
+    log_coefs (k+1) = log_coefs (k+1) ./ x.coefs (1);
   endfor
 
-  log_coefs(2:order) = log_coefs (2:order) ./ x.coefs (1);
-  
   x.coefs = log_coefs;
   
 endfunction

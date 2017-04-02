@@ -55,10 +55,12 @@ function x = times (x, y)
     return
   endif
 
-  order = length (x.coefs);
+  order = get_order (x);
+  prod_coefs = x.coefs (1) .* y.coefs (1);
+  prod_coefs = resize (prod_coefs, order + 1, 1);
   
   for k = [1:order]
-    prod_coefs (k) = dot (x.coefs (1:k), y.coefs (k:-1:1));
+    prod_coefs (k+1) = dot (x.coefs (1:k+1), y.coefs (k+1:-1:1));
   endfor
 
   x.coefs = prod_coefs;

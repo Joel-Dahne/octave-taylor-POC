@@ -40,20 +40,20 @@ function x = cos (x)
     return
   endif
 
-  order = length (x.coefs);
+  order = get_order (x);
   ## Need to compute taylor series for both sin and cos
   sin_coefs = sin (x.coefs (1));
   cos_coefs = cos (x.coefs (1));
-  sin_coefs (2:order) = 0;
-  cos_coefs (2:order) = 0;
+  sin_coefs = resize (sin_coefs, order+1, 1);
+  cos_coefs = resize (cos_coefs, order+1, 1);
   
-  for k = [2:order]
-    for i = [2:k]
-      sin_coefs (k) += (i - 1) .* x.coefs (i) .* cos_coefs (k - i + 1);
-      cos_coefs (k) += (i - 1) .* x.coefs (i) .* sin_coefs (k - i + 1);
+  for k = [1:order]
+    for i = [1:k]
+      sin_coefs (k+1) += i .* x.coefs (i+1) .* cos_coefs (k-i+1);
+      cos_coefs (k+1) += i .* x.coefs (i+1) .* sin_coefs (k-i+1);
     endfor
-    sin_coefs (k) = sin_coefs (k) ./ (k - 1);
-    cos_coefs (k) = -cos_coefs (k) ./ (k - 1);
+    sin_coefs (k+1) = sin_coefs (k+1) ./ k;
+    cos_coefs (k+1) = -cos_coefs (k+1) ./ k;
   endfor
 
   x.coefs = cos_coefs;
