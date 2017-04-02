@@ -47,6 +47,11 @@ functions for using the results.
 * power (x, y)
 * sin (x)
 * cos (x)
+* get_order (x)
+* get_coef (x, n)
+  Get the n-th coefficient of the Taylor expansion
+* get_derivative (x, n)
+  Get the n-th derivative, the n-the coefficient times factorial of n
 
 ### Functions using Taylor expansions
 
