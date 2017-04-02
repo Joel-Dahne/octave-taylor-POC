@@ -18,9 +18,10 @@
 ## @defop Method {@@taylor} power (@var{X}, @var{Y})
 ## @defopx Operator {@@taylor} {@var{X} .^ @var{Y}}
 ## 
-## Computes the general power function.
-##
-## The function is only defined where @var{X} is positive.
+## Computes the general power function which is defined for (1) any
+## positive base @var{X}; (2) @code{@var{X} = 0} when @var{Y} is
+## positive; (3) negative base @var{X} together with integral exponent
+## @var{Y}.
 ##
 ## @example
 ## @group
@@ -45,8 +46,26 @@ function x = power (x, y)
   if (not (isa (x, "taylor")))
     x = taylor (x, length (y.coefs) - 1);
   endif
+
+  ## Short circuit when y is constant
+  if (isa (y, "infsup") || isa (y, "double"))
+    order = get_order (x)
+    power_coefs = x.coefs(1).^y;
+    power_coefs = resize (power_coefs, order + 1, 1);
+
+    for k = [2:order]
+      for i = [2:k]
+        power_coefs(k) += ((y + 1) .* (i-1) ./ (k-1) - 1) .* x.coefs(i) .* ...
+                          power_coefs(k-i+1);
+      endfor
+      power_coefs(k) /= x.coefs(1);
+    endfor
+    x.coefs = power_coefs;
+    return
+  endif
+  
   if (not (isa (y, "taylor")))
-    y = taylor (y, length (x.coefs) - 1);
+    y = taylor (y, get_order (x), "const");
   endif
 
   x = exp (y .* log (x));
