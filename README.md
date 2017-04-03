@@ -60,6 +60,8 @@ functions for using the results.
 
 ## Examples
 
+### Creating a Taylor expansion
+
 To create a Taylor expansion you use the class constructor `taylor
 ()`. The order of the Taylor expansion has to be decided upon
 construction, for example if you only need the derivative order 1 is
@@ -84,3 +86,51 @@ f = taylor ([5, 3, 2])
 
 will create a function with `f(x0) = 5`, `f'(x0) = 3` and `f''(x0) =
 2/2! = 1`.
+
+### Computing with Taylor expansions
+
+Taylor expansions can be used for computations much like ordinary
+numbers. For example with `x = taylor (0, 5, "var")` we get
+
+```
+x + x = [0; 2; 0; 0; 0; 0]
+x.*x = [0; 0; 1; 0; 0; 0]
+exp (x) = [1.0000000; 1.0000000; 0.5000000; 0.1666667; 0.0416667; 0.0083333]
+sin (x) =[0.00000; 1.00000; 0.00000; -0.16667; 0.00000; 0.008332]
+```
+
+all of which we recognize as the coefficients for the functions fifth
+order Taylor expansion at `x=0`. If we instead want the derivatives we
+can use `get_derivative` and get
+
+```
+get_derivative (x + x) = [0; 2; 0; 0; 0; 0]
+get_derivative (x.*x) = [0; 0; 2; 0; 0; 0]
+get_derivative (exp (x)) = [1; 1; 1; 1; 1; 1]
+get_derivative (exp (x)) = [0; 1; 0; -1; 0; 1]
+```
+
+again we recognize all of these. We can also compute more complicated
+functions, with `x = taylor (-2, 40, "var") we for example get
+
+```
+get_derivative (exp (sin (exp ( cos (x) + 2.*x.^5))), 40) = 1.4961e+53
+```
+
+So how accurate is this result? One way to check that is to use
+intervals instead of floating points. If we now let `x = taylor
+(infsup (-2), 40, "var")` we get
+
+```
+get_derivative (exp (sin (exp ( cos (x) + 2.*x.^5))), 40) \subset [1.4957e+53, 1.4965e+53]
+```
+
+So the approximation we got is valid to at least 3 decimals. As a
+final example we have with `x = taylor (infsup (1), 4, "var")` and
+using `format long`
+
+```
+get_derivative ((5 + (cos (3.*x).^2).^(exp (x) + sin (7.*x))), 4) \subset [-671.122145754611, -671.122145754446]
+```
+
+were we see that the enclosure is very tight.
