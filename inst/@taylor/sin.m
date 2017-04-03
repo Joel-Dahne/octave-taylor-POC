@@ -48,12 +48,8 @@ function x = sin (x)
   cos_coefs = resize (cos_coefs, order+1, 1);
   
   for k = [1:order]
-    for i = [1:k]
-      sin_coefs (k+1) += i .* x.coefs (i+1) .* cos_coefs (k-i+1);
-      cos_coefs (k+1) += i .* x.coefs (i+1) .* sin_coefs (k-i+1);
-    endfor
-    sin_coefs (k+1) = sin_coefs (k+1) ./ k;
-    cos_coefs (k+1) = -cos_coefs (k+1) ./ k;
+    sin_coefs (k+1) = dot ((1:k)'.*x.coefs(2:k+1), cos_coefs(k:-1:1)) ./ k;
+    cos_coefs (k+1) = -dot ((1:k)'.*x.coefs(2:k+1), sin_coefs(k:-1:1)) ./ k;
   endfor
 
   x.coefs = sin_coefs;
