@@ -49,7 +49,7 @@ function x = power (x, y)
 
   ## Short circuit when y is constant
   if (isa (y, "infsup") || isa (y, "double"))
-    order = get_order (x)
+    order = get_order (x);
     power_coefs = x.coefs(1).^y;
     power_coefs = resize (power_coefs, order + 1, 1);
 
