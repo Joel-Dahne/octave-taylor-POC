@@ -46,10 +46,7 @@ function x = exp (x)
   exp_coefs = resize (exp_coefs, order+1, 1);
   
   for k = [1:order]
-    for i = [1:k]
-      exp_coefs (k+1) += i .* x.coefs (i+1) .* exp_coefs (k-i+1);
-    endfor
-    exp_coefs (k+1) = exp_coefs (k+1) ./ k;
+    exp_coefs (k+1) = dot ((1:k)'.*x.coefs(2:k+1), exp_coefs(k:-1:1)) ./ k;
   endfor
 
   x.coefs = exp_coefs;
