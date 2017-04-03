@@ -46,14 +46,11 @@ function x = log (x)
 
   log_coefs = log (x.coefs (1));
   log_coefs = resize (log_coefs, order+1, 1);
-  
-  for k = [1:order]
-    for i = [1:k - 1]
-      log_coefs (k+1) -= i .* log_coefs (i+1) .* x.coefs (k-i+1);
-    endfor
-    log_coefs (k+1) = log_coefs (k+1) ./ k;
-    log_coefs (k+1) += x.coefs (k+1);
-    log_coefs (k+1) = log_coefs (k+1) ./ x.coefs (1);
+
+  log_coefs(2) = x.coefs(2)./x.coefs(1);
+  for k = [2:order]
+    log_coefs (k+1)= (x.coefs(k+1) - dot ((1:k-1)'.*log_coefs(2:k),
+                                          x.coefs(k:-1:2))./k)./x.coefs(1);
   endfor
 
   x.coefs = log_coefs;
