@@ -140,3 +140,47 @@ get_derivative ((5 + (cos (3.*x).^2).^(exp (x) + sin (7.*x))), 4) \subset [-671.
 ```
 
 were we see that the enclosure is very tight.
+
+### Integration
+Taylor expansions can be used to calculate integrals. This is done by
+approximating the function with the polynomial given by the Taylor
+expansion. The error of this approximation can then be calculated
+using the remainder term in the expansion. An implementation of this
+is found in `integrate_taylor`.
+
+We can use `integrate_taylor` to calculate the integral of `f(x) =
+sin(x)x` on the interval 0 to 1
+
+```
+integrate_taylor (@(x) sin (x) .* x, infsup(0, 1)) \subset [0.30116, 0.30117]
+```
+
+If no other arguments are given it defaults to using a 6th order
+Taylor expansion and tolerance `sqrt(eps)`. To use another order or
+tolerance we add those arguments as
+
+```
+integrate_taylor (@(x) sin (x) .* x, infsup(0, 1), 20, 1e-12) \subset [0.30116, 0.30117]
+```
+
+Next, consider the function `f(x) = sin(x + exp(x))`. Calculating this
+with the built-in function `quad` gives
+
+```
+quad (@(x) sin (x + exp (x)), 0, 8)
+ABNORMAL RETURN FROM DQAGP
+ans =  0.36205
+```
+
+so `quad` has some problems calculating the integral. Doing the same
+calculations using `integrate_taylor` with order 40 we get
+
+```
+integrate_taylor(f, infsup(0, 8), 40) \subset [0.3474, 0.34741]
+```
+
+We see that `quad` did not get quite the right result, even if it was
+not to far off. This computation does however take quite some time,
+about 5 minutes. This comes both from interval calculations being
+slower than ordinary floating points and the Taylor expansions not
+handling vectorization effectively at the moment.
