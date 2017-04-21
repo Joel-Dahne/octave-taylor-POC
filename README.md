@@ -58,7 +58,7 @@ functions for using the results.
 * TODO newtons interval method
 * TODO integrate
 
-## Examples
+## Usage
 
 ### Creating a Taylor expansion
 
@@ -111,15 +111,21 @@ get_derivative (exp (x)) = [0; 1; 0; -1; 0; 1]
 ```
 
 again we recognize all of these. We can also compute more complicated
-functions, with `x = taylor (-2, 40, "var") we for example get
+functions, with `x = taylor (-2, 40, "var")` we for example get
 
 ```
 get_derivative (exp (sin (exp ( cos (x) + 2.*x.^5))), 40) = 1.4961e+53
 ```
 
+#### Using intervals
+
 So how accurate is this result? One way to check that is to use
-intervals instead of floating points. If we now let `x = taylor
-(infsup (-2), 40, "var")` we get
+intervals arithmetics instead of floating points. Using
+the
+[interval package](https://octave.sourceforge.io/interval/index.html)
+we can calculate with Taylor expansions and get guaranteed
+results. Continuing on the above example using intervals we get, with
+`x = taylor (infsup (-2), 40, "var")`,
 
 ```
 get_derivative (exp (sin (exp ( cos (x) + 2.*x.^5))), 40) \subset [1.4957e+53, 1.4965e+53]
