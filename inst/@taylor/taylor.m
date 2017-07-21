@@ -20,7 +20,7 @@
 ## @deftypeopx Constructor {@@taylor} @var{X} = taylor (@var{C}, @var{dim})
 ## @deftypeopx Constructor {@@taylor} @var{X} = taylor (@var{C}, @var{dim}, @var{type})
 ##
-## Create a Taylor series. 
+## Create a Taylor series.
 
 ## Author: Joel Dahne
 ## Keywords: taylor arithmetic
@@ -28,74 +28,86 @@
 
 function x = taylor (value, order, type)
 
-  
+
   switch nargin
     case 0
       ## order 1 variable
       x = class (struct ("coefs", [0; 1]), "taylor");
       return
-      
     case 1
       if (isa (value, "taylor"))
-        ## Already a taylor expansion
+        ## Already a Taylor expansion
         x = value;
         return
-      endif
-
-      if (isvector (value))
-        ## Create the taylor expansion with coefficients from input
-        x = class (struct ("coefs", vec (value)), "taylor");
-        return
-      endif
-
-      print_usage ()
-      return
-    case 2
-      if (isa (value, "taylor"))
-        if (isindex (order + 1))
-          ## Change the order of the expansion
-          value.coefs = resize (value.coefs, order + 1, 1);
-          x = value;
-          return
-        endif
-      endif
-
-      if (isscalar (value))
-        ## Create a constant with the given order
-        value = resize (value, order + 1, 1);
+      elseif (isa (value, "infsup") || isnumeric (value))
+        ## Create the Taylor expansion with coefficients from input
         x = class (struct ("coefs", value), "taylor");
         return
       endif
+    case 2
+      if (isa (value, "taylor") && isindex (order + 1))
+        ## Change the order of the expansion
+        s = size (value.coefs);
+        s(1) = order + 1;
+        value.coefs = resize (value.coefs, s);
+        x = value;
+        return
+      elseif (isa (value, "infsup") || isnumeric (value))
+        ## Create a Taylor variable with the given order
+        s = size (value);
+        coefs = postpad (reshape (value, [1 s]), order + 1, 0, 1);
+        coefs(2, :) = 1;
+        x = class (struct ("coefs", coefs), "taylor");
+        return
+      endif
     case 3
-      if (isscalar (value))
-        if (strcmp (type, "var"))
-          coefs = resize (value, order + 1, 1);
-          coefs(2) = 1;
-          x = class (struct ("coefs", coefs), "taylor");
-          return
-        elseif (strcmp(type, "const"))
-          coefs = resize (value, order + 1, 1);
-          x = class (struct ("coefs", coefs), "taylor");
-          return
+      if (isa (value, "infsup") || isnumeric (value))
+        s = size (value);
+        coefs = postpad (reshape (value, [1 s]), order + 1, 0, 1);
+        if (!(strcmp (type, "const") || strcmp (type, "c")))
+          coefs(2, :) = 1;
         endif
+        x = class (struct ("coefs", coefs), "taylor");
+        return
       endif
   endswitch
-  
+
+  print_usage ();
 endfunction
 
 %!# Empty constructor
-%!
+%!test
+%! x = taylor ();
+%! assert (coefs (x), [0; 1]);
 
 %!# Vector
-%!
+%!test
+%! x = taylor (magic (3));
+%! assert (coefs (x), magic (3));
 
 %!# Taylor
-%!
+%!test
+%! x = taylor (magic (3));
+%! y = taylor (x);
+%! assert (coefs (y), magic (3));
 
 %!# Taylor + dim
+%!test
+%! x = taylor (magic (3));
+%! y = taylor (x, 5);
+%! assert (coefs (y), postpad (magic (3), 6, 0, 1));
 
-%!# Constant + dim
+%!# Vector + dim
+%!test
+%! x = taylor ([1; 2], 3);
+%! assert (coefs (x), [1, 2; 1, 1; 0, 0; 0, 0]);
 
 %!# Create variable
+%!test
+%! x = taylor ([1; 2], 3, "var");
+%! assert (coefs (x), [1, 2; 1, 1; 0, 0; 0, 0]);
 
 %!# Create constant
+%!test
+%! x = taylor ([1; 2], 3, "const");
+%! assert (coefs (x), [1, 2; 0, 0; 0, 0; 0, 0]);
