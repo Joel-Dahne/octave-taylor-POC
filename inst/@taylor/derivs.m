@@ -15,7 +15,7 @@
 
 ## -*- texinfo -*-
 ## @documentencoding UTF-8
-## @defmethod {@@taylor} deriv (@var{X}, @var{N})
+## @defmethod {@@taylor} derivs (@var{X}, @var{N})
 ##
 ## Get the @var{N}-th derivative of the Tayor expansion @var{X}.
 ## @var{N} can be a vector and it then gets the derivative for every
@@ -24,7 +24,7 @@
 ##
 ## @example
 ## @group
-## deriv (taylor ([1; 2]), 1)
+## derivs (taylor ([1; 2]), 1)
 ##   @result{} ans = 2
 ## @end group
 ## @end example
@@ -35,7 +35,7 @@
 ## Keywords: taylor arithmetic
 ## Created: 2017-03-05
 
-function result = deriv (x, n)
+function result = derivs (x, n)
 
   if (nargin != 1 && nargin != 2)
     print_usage ();
@@ -62,15 +62,15 @@ endfunction
 
 %!test
 %! x = taylor (ones (5, 1));
-%! assert (deriv (x), [1; 1; 2; 6; 24]);
-%! assert (deriv (x, 0), 1)
-%! assert (deriv (x, 1), 1)
-%! assert (deriv (x, 2), 2)
-%! assert (deriv (x, 3), 6)
-%! assert (deriv (x, 4), 24)
+%! assert (derivs (x), [1; 1; 2; 6; 24]);
+%! assert (derivs (x, 0), 1)
+%! assert (derivs (x, 1), 1)
+%! assert (derivs (x, 2), 2)
+%! assert (derivs (x, 3), 6)
+%! assert (derivs (x, 4), 24)
 %!test
 %! x = taylor (magic (3), 2);
-%! assert (deriv (x, 0), reshape (magic (3), [1 3 3]));
-%! assert (deriv (x, 1), ones (1, 3, 3));
-%! assert (deriv (x, 2), zeros (1, 3, 3));
-%! assert (deriv (x, [1 1 2]), cat (1, ones (1, 3, 3), ones (1, 3, 3), zeros (1, 3, 3)));
+%! assert (derivs (x, 0), reshape (magic (3), [1 3 3]));
+%! assert (derivs (x, 1), ones (1, 3, 3));
+%! assert (derivs (x, 2), zeros (1, 3, 3));
+%! assert (derivs (x, [1 1 2]), cat (1, ones (1, 3, 3), ones (1, 3, 3), zeros (1, 3, 3)));
