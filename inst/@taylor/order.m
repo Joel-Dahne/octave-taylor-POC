@@ -27,7 +27,7 @@
 ##   @result{} ans = 2
 ## @end group
 ## @end example
-## @seealso{@@taylor/coefs, @@taylor/deriv}
+## @seealso{@@taylor/coefs, @@taylor/derivs}
 ## @end deftypeop
 
 ## Author: Joel Dahne

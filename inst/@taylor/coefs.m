@@ -32,7 +32,7 @@
 ##                   0  0
 ## @end group
 ## @end example
-## @seealso{@@taylor/order}
+## @seealso{@@taylor/order, @@taylor/derivs}
 ## @end deftypeop
 
 ## Author: Joel Dahne

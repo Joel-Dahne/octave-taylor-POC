@@ -28,7 +28,7 @@
 ##   @result{} ans = 2
 ## @end group
 ## @end example
-## @seealso{@@taylor/get_order}
+## @seealso{@@taylor/order, @@taylor/coefs}
 ## @end defmethod
 
 ## Author: Joel Dahne
