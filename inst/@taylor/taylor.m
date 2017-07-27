@@ -1,4 +1,4 @@
-## Copyright 2014-2016 Joel Dahne
+## Copyright 2017 Joel Dahne
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -17,13 +17,66 @@
 ## @documentencoding UTF-8
 ## @deftypeop Constructor {@@taylor} @var{X} = taylor ()
 ## @deftypeopx Constructor {@@taylor} @var{X} = taylor (@var{V})
-## @deftypeopx Constructor {@@taylor} @var{X} = taylor (@var{C}, @var{dim})
-## @deftypeopx Constructor {@@taylor} @var{X} = taylor (@var{C}, @var{dim}, @var{type})
+## @deftypeopx Constructor {@@taylor} @var{X} = taylor (@var{V}, @var{order})
+## @deftypeopx Constructor {@@taylor} @var{X} = taylor (@var{V}, @var{order}, @var{type})
 ##
-## Create a Taylor series.
+## Create a Taylor expansion.
+##
+## The syntax withour parameters creates a Taylor expansion of order 1
+## with a value of 0 and derivative of 1.  The syntax with a single
+## parameter @code{taylor (@var{V})} creates a Taylor expansion with
+## the coefficients taken from the column vector @var{V}.  With two
+## parameters it creates a Taylor expansions with the order
+## @var{order}, value @var{V} and derivative @code{1}.  Alternatively
+## if @var{V} already is a Taylor expansion it adjust the order to
+## @var{order}. The third parameter can be either @code{"const"} or
+## @code{"var"}, in the first case it creates a constant, that is the
+## derivative is @code{0}, and in the second case a variable,
+## derivative is @code{1}.
+##
+## The type of @var{V} can in principle be any type that supports
+## arrays and standard numerical functions.  It is primary intended to
+## be used with decorated intervals (@code{infsupdec}), most tests and
+## examples are done with decorated intervals.  It should also work
+## well with bare intervals (@code(infsup)) and doubles.  In most
+## cases complex values should also work, the algoritms are the same,
+## but there might be some problems.
+##
+## For the creation of Taylor arrays @var{V} can be given as an array.
+##
+## @example
+## @group
+## taylor ()
+##   @result{} ans = [0]_com + [1]_com X
+## taylor (infsupdec ([1; 2; 3], [4; 5; 6]))
+##   @result{} ans = [1, 4]_com + [2, 5]_com X + [3, 6]_com X^2
+## taylor (infsupdec (5), 4)
+##   @result{} ans = [5]_com + [1]_com X + [0]_com X^2 + [0]_com X^3 + [0]_com X^4
+## x = taylor (); taylor (x, 3)
+##   @result{} ans = [0]_com + [1]_com X + [0]_com X^2 + [0]_com X^3
+## taylor (infsupdec (5), 4, "const")
+##   @result{} ans = [5]_com + [0]_com X + [0]_com X^2 + [0]_com X^3 + [0]_com X^4
+## taylor (infsupdec (5), 4, "var")
+##   @result{} ans = [5]_com + [1]_com X + [0]_com X^2 + [0]_com X^3 + [0]_com X^4
+## taylor (1 + i, 2)
+##   @result{} ans = 1+i + 1X + 0X^2
+## taylor (infsupdec (magic (3)))
+##   @result{} ans =
+##      [8]_com + [3]_com X + [4]_com X^2
+##      [1]_com + [5]_com X + [9]_com X^2
+##      [6]_com + [7]_com X + [2]_com X^2
+## taylor (infsupdec ([1, 2, 3]), 2)
+##   @result{} ans =
+##      ans(:,1) = [1]_com + [1]_com X + [0]_com X^2
+##      ans(:,2) = [2]_com + [1]_com X + [0]_com X^2
+##      ans(:,3) = [3]_com + [1]_com X + [0]_com X^2
+## @end group
+## @end example
+## @seealso{@@infsupdec/infsupdec}
+## @end deftypeop
 
 ## Author: Joel Dahne
-## Keywords: taylor arithmetic
+## Keywords: taylor
 ## Created: 2017-03-05
 
 function x = taylor (value, order, type)
