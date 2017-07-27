@@ -36,7 +36,7 @@ function result = columns (a)
 
 endfunction
 
-%!assert (columns (taylor (zeros (3, 4), 2)), 4);
-%!assert (columns (taylor (zeros (0, 4), 2)), 4);
-%!assert (columns (taylor (zeros (3, 0), 2)), 0);
-%!assert (columns (taylor (zeros (3, 1), 2)), 1);
+%!assert (columns (taylor (infsupdec (zeros (3, 4)), 2)), 4);
+%!assert (columns (taylor (infsupdec (zeros (0, 4)), 2)), 4);
+%!assert (columns (taylor (infsupdec (zeros (3, 0)), 2)), 0);
+%!assert (columns (taylor (infsupdec (zeros (3, 1)), 2)), 1);

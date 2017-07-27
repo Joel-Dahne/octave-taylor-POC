@@ -36,4 +36,4 @@ function result = rows (a)
 
 endfunction
 
-%!assert (rows (taylor (zeros (3, 4), 2)), 3);
+%!assert (rows (taylor (infsupdec (zeros (3, 4)), 2)), 3);

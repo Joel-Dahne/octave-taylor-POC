@@ -37,6 +37,6 @@ function result = numel (a)
 endfunction
 
 %!assert (numel (taylor ()), 1);
-%!assert (numel (taylor (zeros (3, 1), 2)), 3);
-%!assert (numel (taylor (zeros (1, 4), 2)), 4);
-%!assert (numel (taylor (zeros (3, 4), 2)), 12);
+%!assert (numel (taylor (infsupdec (zeros (3, 1)), 2)), 3);
+%!assert (numel (taylor (infsupdec (zeros (1, 4)), 2)), 4);
+%!assert (numel (taylor (infsupdec (zeros (3, 4)), 2)), 12);

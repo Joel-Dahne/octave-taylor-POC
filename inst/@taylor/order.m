@@ -23,7 +23,7 @@
 ##
 ## @example
 ## @group
-## order (taylor ([1; 2], 2))
+## order (taylor (infsupdec ([1; 2]), 2))
 ##   @result{} ans = 2
 ## @end group
 ## @end example
@@ -46,9 +46,9 @@ function result = order (x)
 endfunction
 
 %!# from the documentation string
-%!assert (order (taylor ([1; 2], 2)), 2)
+%!assert (order (taylor (infsupdec ([1; 2]), 2)), 2)
 
 %!assert (order (taylor ()), 1)
-%!assert (order (taylor (1, 2)), 2)
-%!assert (order (taylor ([1; 2; 3; 4])), 3)
-%!assert (order (taylor ([1, 2; 3, 4], 5, "const")), 5)
+%!assert (order (taylor (infsupdec (1), 2)), 2)
+%!assert (order (taylor (infsupdec ([1; 2; 3; 4]))), 3)
+%!assert (order (taylor (infsupdec ([1, 2; 3, 4]), 5, "const")), 5)

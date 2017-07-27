@@ -45,9 +45,9 @@ function result = length (a)
 
 endfunction
 
-%!assert (length (taylor ([], 2)), 0);
-%!assert (length (taylor (0, 2)), 1);
-%!assert (length (taylor (zeros (3, 1), 2)), 3);
-%!assert (length (taylor (zeros (1, 4), 2)), 4);
-%!assert (length (taylor (zeros (3, 4), 2)), 4);
-%!assert (length (taylor (zeros (3, 0, 4), 2)), 0);
+%!assert (length (taylor (infsupdec ([]), 2)), 0);
+%!assert (length (taylor (infsupdec (0), 2)), 1);
+%!assert (length (taylor (infsupdec (zeros (3, 1)), 2)), 3);
+%!assert (length (taylor (infsupdec (zeros (1, 4)), 2)), 4);
+%!assert (length (taylor (infsupdec (zeros (3, 4)), 2)), 4);
+%!assert (length (taylor (infsupdec (zeros (3, 0, 4)), 2)), 0);

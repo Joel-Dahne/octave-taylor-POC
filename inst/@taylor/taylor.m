@@ -85,7 +85,7 @@ function x = taylor (value, order, type)
   switch nargin
     case 0
       ## order 1 variable
-      x = class (struct ("coefs", [0; 1]), "taylor");
+      x = class (struct ("coefs", infsupdec ([0; 1])), "taylor");
       return
     case 1
       if (isa (value, "taylor"))
@@ -131,36 +131,36 @@ endfunction
 %!# Empty constructor
 %!test
 %! x = taylor ();
-%! assert (coefs (x), [0; 1]);
+%! assert (isequal (coefs (x), infsupdec ([0; 1])));
 
 %!# Vector
 %!test
-%! x = taylor (magic (3));
-%! assert (coefs (x), magic (3));
+%! x = taylor (infsupdec (magic (3)));
+%! assert (isequal (coefs (x), infsupdec (magic (3))));
 
 %!# Taylor
 %!test
-%! x = taylor (magic (3));
+%! x = taylor (infsupdec (magic (3)));
 %! y = taylor (x);
-%! assert (coefs (y), magic (3));
+%! assert (isequal (coefs (y), infsupdec (magic (3))));
 
 %!# Taylor + dim
 %!test
-%! x = taylor (magic (3));
+%! x = taylor (infsupdec (magic (3)));
 %! y = taylor (x, 5);
-%! assert (coefs (y), postpad (magic (3), 6, 0, 1));
+%! assert (isequal (coefs (y), postpad (infsupdec (magic (3)), 6, 0, 1)));
 
 %!# Vector + dim
 %!test
-%! x = taylor ([1; 2], 3);
-%! assert (coefs (x), [1, 2; 1, 1; 0, 0; 0, 0]);
+%! x = taylor (infsupdec ([1; 2]), 3);
+%! assert (isequal (coefs (x), infsupdec ([1, 2; 1, 1; 0, 0; 0, 0])));
 
 %!# Create variable
 %!test
-%! x = taylor ([1; 2], 3, "var");
-%! assert (coefs (x), [1, 2; 1, 1; 0, 0; 0, 0]);
+%! x = taylor (infsupdec ([1; 2]), 3, "var");
+%! assert (isequal (coefs (x), infsupdec ([1, 2; 1, 1; 0, 0; 0, 0])));
 
 %!# Create constant
 %!test
-%! x = taylor ([1; 2], 3, "const");
-%! assert (coefs (x), [1, 2; 0, 0; 0, 0; 0, 0]);
+%! x = taylor (infsupdec ([1; 2]), 3, "const");
+%! assert (isequal (coefs (x), infsupdec ([1, 2; 0, 0; 0, 0; 0, 0])));

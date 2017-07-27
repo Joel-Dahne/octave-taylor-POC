@@ -24,8 +24,8 @@
 ##
 ## @example
 ## @group
-## derivs (taylor ([1; 2]), 1)
-##   @result{} ans = 2
+## derivs (taylor (infsupdec ([1; 2])), 1)
+##   @result{} ans = [2]_com
 ## @end group
 ## @end example
 ## @seealso{@@taylor/order, @@taylor/coefs}
@@ -57,20 +57,26 @@ function result = derivs (x, n)
     n = infsup (n);
   endif
 
-  result = d .* factorial (n);
+  if (isa (d, "infsupdec"))
+    ## FIXME: Workaround for the fact that factorial at bests gives
+    ## "dac" as decoration
+    result = d .* newdec (factorial (intervalpart (n)));
+  else
+    result = d .* factorial (n);
+  endif
 endfunction
 
 %!test
-%! x = taylor (ones (5, 1));
-%! assert (derivs (x), [1; 1; 2; 6; 24]);
-%! assert (derivs (x, 0), 1)
-%! assert (derivs (x, 1), 1)
-%! assert (derivs (x, 2), 2)
-%! assert (derivs (x, 3), 6)
-%! assert (derivs (x, 4), 24)
+%! x = taylor (infsupdec (ones (5, 1)));
+%! assert (isequal (derivs (x), infsupdec ([1; 1; 2; 6; 24])));
+%! assert (isequal (derivs (x, 0), infsupdec (1)));
+%! assert (isequal (derivs (x, 1), infsupdec (1)));
+%! assert (isequal (derivs (x, 2), infsupdec (2)));
+%! assert (isequal (derivs (x, 3), infsupdec (6)));
+%! assert (isequal (derivs (x, 4), infsupdec (24)));
 %!test
-%! x = taylor (magic (3), 2);
-%! assert (derivs (x, 0), reshape (magic (3), [1 3 3]));
-%! assert (derivs (x, 1), ones (1, 3, 3));
-%! assert (derivs (x, 2), zeros (1, 3, 3));
-%! assert (derivs (x, [1 1 2]), cat (1, ones (1, 3, 3), ones (1, 3, 3), zeros (1, 3, 3)));
+%! x = taylor (infsupdec (magic (3)), 2);
+%! assert (isequal (derivs (x, 0), reshape (infsupdec (magic (3)), [1 3 3])));
+%! assert (isequal (derivs (x, 1), infsupdec (ones (1, 3, 3))));
+%! assert (isequal (derivs (x, 2), infsupdec (zeros (1, 3, 3))));
+%! assert (isequal (derivs (x, [1 1 2]), cat (1, infsupdec (ones (1, 3, 3)), ones (1, 3, 3), zeros (1, 3, 3))));

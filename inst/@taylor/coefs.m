@@ -26,10 +26,10 @@
 ##
 ## @example
 ## @group
-## coefs (taylor ([1; 2], 2))
-##   @result{} ans = 1  2
-##                   0  0
-##                   0  0
+## coefs (taylor (infsupdec ([1; 2]), 2))
+##   @result{} ans = [1]_com  [2]_com
+##                   [0]_com  [0]_com
+##                   [0]_com  [0]_com
 ## @end group
 ## @end example
 ## @seealso{@@taylor/order, @@taylor/derivs}
@@ -58,11 +58,11 @@ function result = coefs (x, n)
 endfunction
 
 %!# from the documentation string
-%!assert (coefs (taylor ([1; 2], 2)), [1, 2; 1, 1; 0, 0])
+%!assert (isequal (coefs (taylor (infsupdec ([1; 2]), 2)), infsupdec ([1, 2; 1, 1; 0, 0])))
 
 %!test
-%! x = taylor (magic (3), 2);
-%! assert (coefs (x, 0), reshape (magic (3), [1 3 3]));
-%! assert (coefs (x, 1), reshape (ones (3), [1 3 3]));
-%! assert (coefs (x, 2), reshape (zeros (3), [1 3 3]));
-%! assert (coefs (x, [1 1 2]), cat (1, ones (1, 3, 3), ones (1, 3, 3), zeros (1, 3, 3)));
+%! x = taylor (infsupdec (magic (3)), 2);
+%! assert (isequal (coefs (x, 0), reshape (infsupdec (magic (3)), [1 3 3])));
+%! assert (isequal (coefs (x, 1), reshape (infsupdec (ones (3)), [1 3 3])));
+%! assert (isequal (coefs (x, 2), reshape (infsupdec (zeros (3)), [1 3 3])));
+%! assert (isequal (coefs (x, [1 1 2]), cat (1, infsupdec (ones (1, 3, 3)), ones (1, 3, 3), zeros (1, 3, 3))));

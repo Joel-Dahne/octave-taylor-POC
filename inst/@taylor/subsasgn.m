@@ -61,17 +61,17 @@ function A = subsasgn (A, S, B)
 endfunction
 
 %!test
-%! A = taylor (magic (3), 2, "const");
+%! A = taylor (infsupdec (magic (3)), 2, "const");
 %! A(4, 4) = taylor (42, 2, "const");
-%! assert (isequal (A, taylor ([magic(3),[0;0;0];0,0,0,42], 2, "const")));
+%! assert (isequal (A, taylor (infsupdec ([magic(3),[0;0;0];0,0,0,42]), 2, "const")));
 %!test
-%! A = taylor ([1 2], 2);
+%! A = taylor (infsupdec ([1 2]), 2);
 %! A(2) = taylor (3, 2);
-%! assert (isequal (A, taylor ([1 3], 2)));
+%! assert (isequal (A, taylor (infsupdec ([1 3]), 2)));
 %!error
-%! A = taylor (1, 2);
+%! A = taylor (infsupdec (1), 2);
 %! A(2) = taylor (2, 3);
 %!xtest
-%! A = taylor (magic (3), 2, "const");
-%! A([1 2], 1) = taylor (42, 2, "const");
-%! assert (isequal (A, taylor ([42, 1, 6; 42, 5, 7; 4, 9, 2], 2, "const")));
+%! A = taylor (infsupdec (magic (3)), 4, "const");
+%! A([1 2], 1) = taylor (42, 4, "const");
+%! assert (isequal (A, taylor (infsupdec ([42, 1, 6; 42, 5, 7; 4, 9, 2]), 4, "const")));

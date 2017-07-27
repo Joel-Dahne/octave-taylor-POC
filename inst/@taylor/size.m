@@ -71,11 +71,11 @@ function varargout = size (a, dim)
 
 endfunction
 
-%!assert (size (taylor (zeros (3, 4), 2)), [3 4]);
-%!assert (size (taylor (zeros (2, 3, 4), 2)), [2, 3, 4]);
+%!assert (size (taylor (infsupdec (zeros (3, 4)), 2)), [3 4]);
+%!assert (size (taylor (infsupdec (zeros (2, 3, 4)), 2)), [2, 3, 4]);
 %!assert (size (taylor ()), [1, 1])
 %!test
-%! [x y z] = size (taylor (magic (3), 2));
+%! [x y z] = size (taylor (infsupdec (magic (3)), 2));
 %! assert (x, 3);
 %! assert (y, 3);
 %! assert (z, 1);

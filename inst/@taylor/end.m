@@ -24,9 +24,15 @@
 ## single index is used to address all entries in column-first order.  For
 ## @var{n} > 1 the @var{k}'th dimension is addressed separately.
 ##
-## FIXME: Add example
 ## @example
 ## @group
+## x = taylor (infsupdec ([1, 2, 3; 4, 5, 6]), 2);
+## A(1, end)
+##    @result{} [3]_com + [1]_com X + [0]_com X^2
+## A(end, 1)
+##    @result{} [4]_com + [1]_com X + [0]_com X^2
+## A(end)
+##    @result{} [6]_com + [1]_com X + [0]_com X^2
 ## @end group
 ## @end example
 ## @seealso{@@taylor/size, @@taylor/length, @@taylor/numel, @@taylor/rows, @@taylor/columns}
@@ -46,7 +52,7 @@ function result = end (a, k, n)
 
 endfunction
 
-%!assert (isequal (taylor (magic (3), 2)(end), taylor (2, 2)));
-%!assert (isequal (taylor (magic (3), 2)(end, 2), taylor (9, 2)));
-%!assert (isequal (taylor (magic (3), 2)(2, end), taylor (7, 2)));
-%!assert (isequal (taylor ([1 2; 3 4; 5 6], 2)(end:-1:1, :), taylor ([5 6; 3 4; 1 2], 2)));
+%!assert (isequal (taylor (infsupdec (magic (3)), 2)(end), taylor (infsupdec (2), 2)));
+%!assert (isequal (taylor (infsupdec (magic (3)), 2)(end, 2), taylor (infsupdec (9), 2)));
+%!assert (isequal (taylor (infsupdec (magic (3)), 2)(2, end), taylor (infsupdec (7), 2)));
+%!assert (isequal (taylor (infsupdec ([1 2; 3 4; 5 6]), 2)(end:-1:1, :), taylor (infsupdec ([5 6; 3 4; 1 2]), 2)));
