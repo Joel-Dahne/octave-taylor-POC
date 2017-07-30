@@ -23,25 +23,17 @@
 ## Select property @var{P} or elements @var{I} from Taylor array @var{A}.
 ##
 ## The index @var{I} may be either @code{:} or an index array.
-## @comment DO NOT SYNCHRONIZE DOCUMENTATION STRING
-## The property @var{P} may correspond to any unary method of the interval's
-## class, but usually is either @code{inf} or @code{sup}.
 ##
 ## @example
 ## @group
-## x = infsup (magic (3), magic (3) + 1);
+## x = taylor (infsupdec (magic (3)), 2);
 ## x (1)
-##   @result{} ans = [8, 9]
+##   @result{} ans = [8]_com + [1]_com X + [0]_com X^2
 ## x (:, 2)
-##   @result{} ans = 3×1 interval vector
-##       [1, 2]
-##       [5, 6]
-##      [9, 10]
-## x.inf
-##   @result{} ans =
-##      8   1   6
-##      3   5   7
-##      4   9   2
+##   @result{} ans = 3×1 Taylor vector of order 2
+##      [1]_com + [1]_com X + [0]_com X^2
+##      [5]_com + [1]_com X + [0]_com X^2
+##      [9]_com + [1]_com X + [0]_com X^2
 ## @end group
 ## @end example
 ## @seealso{@@taylor/subsasgn, @@taylor/end}
@@ -76,8 +68,8 @@ function A = subsref (A, S)
 endfunction
 
 %!test
-%! x = taylor (magic (3), 3);
-%! assert (isequal (x(1), taylor ([8; 1; 0; 0])));
-%! assert (isequal (x(2), taylor ([3; 1; 0; 0])));
-%! assert (isequal (x(3), taylor ([4; 1; 0; 0])));
-%! assert (isequal (x(2, 2), taylor ([5; 1; 0; 0])));
+%! x = taylor (infsupdec (magic (3)), 3);
+%! assert (isequal (x(1), taylor (infsupdec ([8; 1; 0; 0]))));
+%! assert (isequal (x(2), taylor (infsupdec ([3; 1; 0; 0]))));
+%! assert (isequal (x(3), taylor (infsupdec ([4; 1; 0; 0]))));
+%! assert (isequal (x(2, 2), taylor (infsupdec ([5; 1; 0; 0]))));
