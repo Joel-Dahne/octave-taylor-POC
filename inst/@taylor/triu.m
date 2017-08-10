@@ -66,18 +66,18 @@ endfunction
 
 %!shared m, x
 %! m = infsupdec (magic (3));
-%! x = taylor (m, 2);
-%!assert (isequal (triu (x), taylor (triu (x), 2)))
-%!assert (isequal (triu (x, 1), taylor (triu (x, 1), 2)))
-%!assert (isequal (triu (x, 2), taylor (triu (x, 2), 2)))
-%!assert (isequal (triu (x, 3), taylor (triu (x, 3), 2)))
-%!assert (isequal (triu (x, -1), taylor (triu (x, -1), 2)))
-%!assert (isequal (triu (x, -2), taylor (triu (x, -2), 2)))
-%!assert (isequal (triu (x, -3), taylor (triu (x, -3), 2)))
-%!assert (isequal (triu (x, 0, "pack"), taylor (triu (x, 0, "pack"), 2)))
-%!assert (isequal (triu (x, 1, "pack"), taylor (triu (x, 1, "pack"), 2)))
-%!assert (isequal (triu (x, 2, "pack"), taylor (triu (x, 2, "pack"), 2)))
-%!assert (isequal (triu (x, 3, "pack"), taylor (triu (x, 3, "pack"), 2)))
-%!assert (isequal (triu (x, -1, "pack"), taylor (triu (x, -1, "pack"), 2)))
-%!assert (isequal (triu (x, -2, "pack"), taylor (triu (x, -2, "pack"), 2)))
-%!assert (isequal (triu (x, -3, "pack"), taylor (triu (x, -3, "pack"), 2)))
+%! x = taylor (m, 2, "const");
+%!assert (isequal (triu (x), taylor (triu (m), 2, "const")))
+%!assert (isequal (triu (x, 1), taylor (triu (m, 1), 2, "const")))
+%!assert (isequal (triu (x, 2), taylor (triu (m, 2), 2, "const")))
+%!assert (isequal (triu (x, 3), taylor (triu (m, 3), 2, "const")))
+%!assert (isequal (triu (x, -1), taylor (triu (m, -1), 2, "const")))
+%!assert (isequal (triu (x, -2), taylor (triu (m, -2), 2, "const")))
+%!assert (isequal (triu (x, -3), taylor (triu (m, -3), 2, "const")))
+%!assert (isequal (triu (x, 0, "pack"), taylor (triu (m, 0, "pack"), 2, "const")))
+%!assert (isequal (triu (x, 1, "pack"), taylor (triu (m, 1, "pack"), 2, "const")))
+%!assert (isequal (triu (x, 2, "pack"), taylor (triu (m, 2, "pack"), 2, "const")))
+%!assert (isequal (triu (x, 3, "pack"), taylor (triu (m, 3, "pack"), 2, "const")))
+%!assert (isequal (triu (x, -1, "pack"), taylor (triu (m, -1, "pack"), 2, "const")))
+%!assert (isequal (triu (x, -2, "pack"), taylor (triu (m, -2, "pack"), 2, "const")))
+%!assert (isequal (triu (x, -3, "pack"), taylor (triu (m, -3, "pack"), 2, "const")))

@@ -66,18 +66,18 @@ endfunction
 
 %!shared m, x
 %! m = infsupdec (magic (3));
-%! x = taylor (m, 2);
-%!assert (isequal (tril (x), taylor (tril (x), 2)))
-%!assert (isequal (tril (x, 1), taylor (tril (x, 1), 2)))
-%!assert (isequal (tril (x, 2), taylor (tril (x, 2), 2)))
-%!assert (isequal (tril (x, 3), taylor (tril (x, 3), 2)))
-%!assert (isequal (tril (x, -1), taylor (tril (x, -1), 2)))
-%!assert (isequal (tril (x, -2), taylor (tril (x, -2), 2)))
-%!assert (isequal (tril (x, -3), taylor (tril (x, -3), 2)))
-%!assert (isequal (tril (x, 0, "pack"), taylor (tril (x, 0, "pack"), 2)))
-%!assert (isequal (tril (x, 1, "pack"), taylor (tril (x, 1, "pack"), 2)))
-%!assert (isequal (tril (x, 2, "pack"), taylor (tril (x, 2, "pack"), 2)))
-%!assert (isequal (tril (x, 3, "pack"), taylor (tril (x, 3, "pack"), 2)))
-%!assert (isequal (tril (x, -1, "pack"), taylor (tril (x, -1, "pack"), 2)))
-%!assert (isequal (tril (x, -2, "pack"), taylor (tril (x, -2, "pack"), 2)))
-%!assert (isequal (tril (x, -3, "pack"), taylor (tril (x, -3, "pack"), 2)))
+%! x = taylor (m, 2, "const");
+%!assert (isequal (tril (x), taylor (tril (m), 2, "const")))
+%!assert (isequal (tril (x, 1), taylor (tril (m, 1), 2, "const")))
+%!assert (isequal (tril (x, 2), taylor (tril (m, 2), 2, "const")))
+%!assert (isequal (tril (x, 3), taylor (tril (m, 3), 2, "const")))
+%!assert (isequal (tril (x, -1), taylor (tril (m, -1), 2, "const")))
+%!assert (isequal (tril (x, -2), taylor (tril (m, -2), 2, "const")))
+%!assert (isequal (tril (x, -3), taylor (tril (m, -3), 2, "const")))
+%!assert (isequal (tril (x, 0, "pack"), taylor (tril (m, 0, "pack"), 2, "const")))
+%!assert (isequal (tril (x, 1, "pack"), taylor (tril (m, 1, "pack"), 2, "const")))
+%!assert (isequal (tril (x, 2, "pack"), taylor (tril (m, 2, "pack"), 2, "const")))
+%!assert (isequal (tril (x, 3, "pack"), taylor (tril (m, 3, "pack"), 2, "const")))
+%!assert (isequal (tril (x, -1, "pack"), taylor (tril (m, -1, "pack"), 2, "const")))
+%!assert (isequal (tril (x, -2, "pack"), taylor (tril (m, -2, "pack"), 2, "const")))
+%!assert (isequal (tril (x, -3, "pack"), taylor (tril (m, -3, "pack"), 2, "const")))
