@@ -1,62 +1,126 @@
 # octave-taylor
 
-This is a proof-of-concept implementation of Taylor arithmetic in
-Octave. It is not meant to be complete or bug free.
+This is an implementation of Taylor arithmetic in Octave. It started
+as a proof of concept implementation but the current goal is to
+develop a full package.
 
-It is intended to work together with the interval package, but again
-this is not perfect.
+Much of the work have been done with spare time from the Google Summer
+of Code project
+[https://gsocinterval.blogspot.se/]{https://gsocinterval.blogspot.se/}
+
+The package is developed to work with the [interval
+package]{https://octave.sourceforge.io/interval/index.html} for Octave
+but should in general also work with normal floating point numbers and
+even complex numbers.
 
 ## Short about Taylor arithmetic
 
 Taylor arithmetic is a method for automatically computing derivatives
-for functions. It is suitable for computing high order derivatives and
-can be generalized to n-dimensional functions. For another
-implementation of Taylor arithmetic see for
-example
-[Real and Complex Taylor Arithmetic in C-XSC](http://www2.math.uni-wuppertal.de/~xsc/preprints/prep_05_4.pdf).
+for functions. It is suitable for computing high order
+derivatives. For a short introduction to Taylor arithmetic and this
+package see
+[this]{https://gsocinterval.blogspot.se/2017/07/a-package-for-taylor-arithmetic.html}
+blogpost.
 
-The mathematical foundation for Taylor arithmetic is computations with
-Taylor series. For a (real analytic) function `f` we can expand it
-into its Taylor series around a points `x0`.
-
-```
-f(x) = f(x0) + f'(x0)(x-x0) + f''(x0)/2!(x-x0)^2 + f'''(x0)/3!(x-x0)^3 + ...
-```
-
-The idea is that if we know the coefficients for the series we can
-from that get the derivatives. This package provides methods for
-creating and calculating with Taylor series. There is also some
-functions for using the results.
+For another implementation of implementation of Taylor arithmetic see
+for example [Real and Complex Taylor Arithmetic in
+C-XSC](http://www2.math.uni-wuppertal.de/~xsc/preprints/prep_05_4.pdf).
 
 ## Implemented functions
 
-### Functions on Taylor expansions
+### Taylor constructor
 
-* taylor (value, order, type)
-  Class contructor for the taylor-class
-* plus (x, y)
-  Compute the sum of two taylor-classes
-* minus (x, y)
-  Compute the difference of two taylor-classes
-* times (x, y)
-  Compute the product of two taylor-classes
-* rdivide (x, y)
-  Compute the quotient of two taylor-classes
-* exp (x)
-* log (x)
-* power (x, y)
-* sin (x)
-* cos (x)
-* get_order (x)
-* get_coef (x, n)
-  Get the n-th coefficient of the Taylor expansion
-* get_derivative (x, n)
-  Get the n-th derivative, the n-the coefficient times factorial of n
+* @taylor/taylor
 
-### Functions using Taylor expansions
+### Utility functions
 
-* TODO newtons interval method
-* TODO integrate
+* @taylor/cat
+* @taylor/columns
+* @taylor/ctranspose
+* @taylor/diag
+* @taylor/end
+* @taylor/horzcat
+* @taylor/iscolumn
+* @taylor/ismatrix
+* @taylor/isrow
+* @taylor/isscalar
+* @taylor/issquare
+* @taylor/isvector
+* @taylor/length
+* @taylor/ndims
+* @taylor/numel
+* @taylor/order
+* @taylor/postpad
+* @taylor/prepad
+* @taylor/reshape
+* @taylor/resize
+* @taylor/rows
+* @taylor/size
+* @taylor/subsasgn
+* @taylor/subsref
+* @taylor/transpose
+* @taylor/tril
+* @taylor/triu
+* @taylor/vertcat
+
+### Printing
+
+* @taylor/disp
+* @taylor/display
+
+## Functions to be implemented
+
+### Comparison
+
+* @taylor/eq
+* @taylor/ne
+
+### Taylor functions
+
+* @taylor/plus
+* @taylor/minus
+* @taylor/times
+* @taylor/rdivide
+* @taylor/ldivide
+* @taylor/rsqrt
+* @taylor/sqrt1px2
+* @taylor/sqrtp1m1
+* @taylor/sqrt1mx2
+* @taylor/sqrtx2m1
+* @taylor/sqr
+* @taylor/pow
+* @taylor/exp
+* @taylor/expm1
+* @taylor/ln
+* @taylor/lnp1
+* @taylor/sin
+* @taylor/cos
+* @taylor/tan
+* @taylor/cot
+* @taylor/sinh
+* @taylor/cosh
+* @taylor/tanh
+* @taylor/coth
+* @taylor/asin
+* @taylor/acos
+* @taylor/atan
+* @taylor/acot
+* @taylor/asinh
+* @taylor/acosh
+* @taylor/atanh
+* @taylor/acoth
+* @taylor/erf
+* @taylor/erfc
+
+### Taylor array functions
+
+* @taylor/dot
+* @taylor/prod
+* @taylor/sum
+* @taylor/sumabs
+* @taylor/sumsq
+* @taylor/jacobian
+* @taylor/hessian
 
 ## Usage
 
@@ -64,8 +128,9 @@ functions for using the results.
 
 To create a Taylor expansion you use the class constructor `taylor
 ()`. The order of the Taylor expansion has to be decided upon
-construction, for example if you only need the derivative order 1 is
-sufficient. To create a variable with value `v` of order `n` you use
+construction, for example if you only need the first derivative order
+1 is sufficient. To create a variable with value `v` of order `n` you
+use
 
 ```
 x = taylor (v, n, 'var')
@@ -81,106 +146,24 @@ It is also possible to directly specify the coefficients for the
 expansion, for example
 
 ```
-f = taylor ([5, 3, 2])
+f = taylor (infsupdec ([5, 3, 2]))
 ```
 
-will create a function with `f(x0) = 5`, `f'(x0) = 3` and `f''(x0) =
-2/2! = 1`.
+will create a function with `f(x0) = [5]_com`, `f'(x0) = [3]_com` and
+`f''(x0) = [2]_com/2! = [1]_com`.
 
 ### Computing with Taylor expansions
 
-Taylor expansions can be used for computations much like ordinary
-numbers. For example with `x = taylor (0, 5, "var")` we get
+The Taylor package overloads most numerical functions and Taylor
+expansions can thus be used in computation much like ordinary
+intervals or numbers.
 
-```
-x + x = [0; 2; 0; 0; 0; 0]
-x.*x = [0; 0; 1; 0; 0; 0]
-exp (x) = [1.0000000; 1.0000000; 0.5000000; 0.1666667; 0.0416667; 0.0083333]
-sin (x) =[0.00000; 1.00000; 0.00000; -0.16667; 0.00000; 0.008332]
-```
+The implementation of numerical functions is not yet completed.
 
-all of which we recognize as the coefficients for the functions fifth
-order Taylor expansion at `x=0`. If we instead want the derivatives we
-can use `get_derivative` and get
+## Authors, License, Credits
 
-```
-get_derivative (x + x) = [0; 2; 0; 0; 0; 0]
-get_derivative (x.*x) = [0; 0; 2; 0; 0; 0]
-get_derivative (exp (x)) = [1; 1; 1; 1; 1; 1]
-get_derivative (exp (x)) = [0; 1; 0; -1; 0; 1]
-```
-
-again we recognize all of these. We can also compute more complicated
-functions, with `x = taylor (-2, 40, "var")` we for example get
-
-```
-get_derivative (exp (sin (exp ( cos (x) + 2.*x.^5))), 40) = 1.4961e+53
-```
-
-#### Using intervals
-
-So how accurate is this result? One way to check that is to use
-intervals arithmetics instead of floating points. Using
-the
-[interval package](https://octave.sourceforge.io/interval/index.html)
-we can calculate with Taylor expansions and get guaranteed
-results. Continuing on the above example using intervals we get, with
-`x = taylor (infsup (-2), 40, "var")`,
-
-```
-get_derivative (exp (sin (exp ( cos (x) + 2.*x.^5))), 40) \subset [1.4957e+53, 1.4965e+53]
-```
-
-So the approximation we got is valid to at least 3 decimals. As a
-final example we have with `x = taylor (infsup (1), 4, "var")` and
-using `format long`
-
-```
-get_derivative ((5 + (cos (3.*x).^2).^(exp (x) + sin (7.*x))), 4) \subset [-671.122145754611, -671.122145754446]
-```
-
-were we see that the enclosure is very tight.
-
-### Integration
-Taylor expansions can be used to calculate integrals. This is done by
-approximating the function with the polynomial given by the Taylor
-expansion. The error of this approximation can then be calculated
-using the remainder term in the expansion. An implementation of this
-is found in `integrate_taylor`.
-
-We can use `integrate_taylor` to calculate the integral of `f(x) =
-sin(x)x` on the interval 0 to 1
-
-```
-integrate_taylor (@(x) sin (x) .* x, infsup(0, 1)) \subset [0.30116, 0.30117]
-```
-
-If no other arguments are given it defaults to using a 6th order
-Taylor expansion and tolerance `sqrt(eps)`. To use another order or
-tolerance we add those arguments as
-
-```
-integrate_taylor (@(x) sin (x) .* x, infsup(0, 1), 20, 1e-12) \subset [0.30116, 0.30117]
-```
-
-Next, consider the function `f(x) = sin(x + exp(x))`. Calculating this
-with the built-in function `quad` gives
-
-```
-quad (@(x) sin (x + exp (x)), 0, 8)
-ABNORMAL RETURN FROM DQAGP
-ans =  0.36205
-```
-
-so `quad` has some problems calculating the integral. Doing the same
-calculations using `integrate_taylor` with order 40 we get
-
-```
-integrate_taylor(f, infsup(0, 8), 40) \subset [0.3474, 0.34741]
-```
-
-We see that `quad` did not get quite the right result, even if it was
-not to far off. This computation does however take quite some time,
-about 5 minutes. This comes both from interval calculations being
-slower than ordinary floating points and the Taylor expansions not
-handling vectorization effectively at the moment.
+This package is the work of Joel Dahne. It takes much inspiration, and
+depends on, the [interval
+package]{https://octave.sourceforge.io/interval/index.html} for
+Octave. It is released under the terms of the GNU General Public
+License, version 3.
