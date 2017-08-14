@@ -119,7 +119,7 @@ endfunction
 
 %!# from the documentation string
 %!assert (taylortotext (taylor (infsupdec (1 + eps), 1)), "[1.0000000000000002, 1.000000000000001]_com + [1]_com X");
-%!assert (taylortotext (taylor ()), "0 + 1X");
+%!assert (taylortotext (taylor ()), "[0]_com + [1]_com X");
 
 %!assert (taylortotext (taylor (infsupdec (1 + eps), 1), "exact decimal"), "[1.0000000000000002220446049250313080847263336181640625]_com + [1]_com X");
 %!assert (taylortotext (taylor (infsupdec (1 + eps), 1), "exact hexadecimal"), "[0x1.0000000000001p+0]_com + [0x1.0000000000000p+0]_com X");
