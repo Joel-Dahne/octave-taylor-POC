@@ -65,6 +65,7 @@ C-XSC](http://www2.math.uni-wuppertal.de/~xsc/preprints/prep_05_4.pdf).
 
 ### Printing
 
+* @taylor/taylortotext
 * @taylor/disp
 * @taylor/display
 
