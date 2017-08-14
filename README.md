@@ -6,10 +6,10 @@ develop a full package.
 
 Much of the work have been done with spare time from the Google Summer
 of Code project
-[https://gsocinterval.blogspot.se/]{https://gsocinterval.blogspot.se/}
+[https://gsocinterval.blogspot.se/](https://gsocinterval.blogspot.se/)
 
 The package is developed to work with the [interval
-package]{https://octave.sourceforge.io/interval/index.html} for Octave
+package](https://octave.sourceforge.io/interval/index.html) for Octave
 but should in general also work with normal floating point numbers and
 even complex numbers.
 
@@ -19,7 +19,7 @@ Taylor arithmetic is a method for automatically computing derivatives
 for functions. It is suitable for computing high order
 derivatives. For a short introduction to Taylor arithmetic and this
 package see
-[this]{https://gsocinterval.blogspot.se/2017/07/a-package-for-taylor-arithmetic.html}
+[this](https://gsocinterval.blogspot.se/2017/07/a-package-for-taylor-arithmetic.html)
 blogpost.
 
 For another implementation of implementation of Taylor arithmetic see
@@ -164,6 +164,6 @@ The implementation of numerical functions is not yet completed.
 
 This package is the work of Joel Dahne. It takes much inspiration, and
 depends on, the [interval
-package]{https://octave.sourceforge.io/interval/index.html} for
+package](https://octave.sourceforge.io/interval/index.html) for
 Octave. It is released under the terms of the GNU General Public
 License, version 3.
