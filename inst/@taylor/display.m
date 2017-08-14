@@ -35,13 +35,13 @@
 ## @end example
 ## @example
 ## @group
-## x = infsupdec (2); display (x);
+## x = taylor (infsupdec (2), 2); display (x);
 ##   @result{} x = [2]_com + [1]_com X + [0]_com X^2
 ## @end group
 ## @end example
 ## @example
 ## @group
-## y = infsupdec (eps); display (y);
+## y = taylor (infsupdec (eps), 2); display (y);
 ##   @result{} y = [2.2204e-16, 2.2205e-16]_com + [1]_com X + [0]_com X^2
 ## @end group
 ## @end example

@@ -27,9 +27,12 @@
 ## @example
 ## @group
 ## coefs (taylor (infsupdec ([1; 2]), 2))
-##   @result{} ans = [1]_com  [2]_com
-##                   [0]_com  [0]_com
-##                   [0]_com  [0]_com
+##   @result{} ans = 3×2 interval matrix
+##
+##      [1]_com   [2]_com
+##      [1]_com   [1]_com
+##      [0]_com   [0]_com
+##
 ## @end group
 ## @end example
 ## @seealso{@@taylor/order, @@taylor/derivs}

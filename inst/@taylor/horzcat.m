@@ -24,7 +24,7 @@
 ##
 ## @example
 ## @group
-## x = taylor (infsupdec (5), 2)
+## x = taylor (infsupdec (5), 2);
 ## [x, x, x]
 ##   @result{} ans = 1×3 Taylor matrix of order 2
 ##

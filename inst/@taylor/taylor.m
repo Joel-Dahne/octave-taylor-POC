@@ -59,17 +59,19 @@
 ## taylor (infsupdec (5), 4, "var")
 ##   @result{} ans = [5]_com + [1]_com X + [0]_com X^2 + [0]_com X^3 + [0]_com X^4
 ## taylor (1 + i, 2)
-##   @result{} ans = 1+i + 1X + 0X^2
+##   @result{} ans = 1+1i + 1X + 0X^2
 ## taylor (infsupdec (magic (3)))
-##   @result{} ans =
+##   @result{} ans = 3×1 Taylor vector of order 2
 ##      [8]_com + [3]_com X + [4]_com X^2
 ##      [1]_com + [5]_com X + [9]_com X^2
 ##      [6]_com + [7]_com X + [2]_com X^2
 ## taylor (infsupdec ([1, 2, 3]), 2)
-##   @result{} ans =
+##   @result{} ans = 1×3 Taylor matrix of order 2
+##
 ##      ans(:,1) = [1]_com + [1]_com X + [0]_com X^2
 ##      ans(:,2) = [2]_com + [1]_com X + [0]_com X^2
 ##      ans(:,3) = [3]_com + [1]_com X + [0]_com X^2
+##
 ## @end group
 ## @end example
 ## @seealso{@@infsupdec/infsupdec}

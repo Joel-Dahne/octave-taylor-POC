@@ -28,18 +28,18 @@
 ## @example
 ## @group
 ## format long
-## disp (taylor ("pi"), 1)
-##   @result{} [3.14159265358979, 3.1415926535898]_com + [1] X
+## disp (taylor (infsupdec ("pi"), 1))
+##   @result{} [3.14159265358979, 3.1415926535898]_com + [1]_com X
 ## format short
-## disp (infsupdec ("pi"))
-##   @result{} [3.1415, 3.1416]_com + [1] X
-## disp (infsupdec (1 : 5))
+## disp (taylor (infsupdec ("pi"), 1))
+##   @result{} [3.1415, 3.1416]_com + [1]_com X
+## disp (taylor (infsupdec (1 : 5), 2))
 ##   @result{}    ans(:,1) = [1]_com + [1]_com X + [0]_com X^2
 ##  ans(:,2) = [2]_com + [1]_com X + [0]_com X^2
 ##  ans(:,3) = [3]_com + [1]_com X + [0]_com X^2
 ##  ans(:,4) = [4]_com + [1]_com X + [0]_com X^2
 ##  ans(:,5) = [5]_com + [1]_com X + [0]_com X^2
-## s = disp (taylor (infsupdec (0), 2)
+## s = disp (taylor (infsupdec (0), 2))
 ##   @result{} s = [0]_com + [1]_com X + [0]_com X^2
 ## @end group
 ## @end example

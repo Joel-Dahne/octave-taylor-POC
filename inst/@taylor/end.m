@@ -28,11 +28,11 @@
 ## @example
 ## @group
 ## x = taylor (infsupdec ([1, 2, 3; 4, 5, 6]), 2);
-## A(1, end)
+## x(1, end)
 ##    @result{} [3]_com + [1]_com X + [0]_com X^2
-## A(end, 1)
+## x(end, 1)
 ##    @result{} [4]_com + [1]_com X + [0]_com X^2
-## A(end)
+## x(end)
 ##    @result{} [6]_com + [1]_com X + [0]_com X^2
 ## @end group
 ## @end example

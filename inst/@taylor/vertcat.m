@@ -24,13 +24,14 @@
 ##
 ## @example
 ## @group
-## x = taylor (infsupdec (5), 2)
+## x = taylor (infsupdec (5), 2);
 ## [x; x; x]
-##   @result{} ans = 3×1 Taylor matrix of order 2
+##   @result{} ans = 3×1 Taylor vector of order 2
 ##
 ##      [5]_com + [1]_com X + [0]_com X^2
 ##      [5]_com + [1]_com X + [0]_com X^2
 ##      [5]_com + [1]_com X + [0]_com X^2
+##
 ## @end group
 ## @end example
 ## @seealso{@@taylor/horzcat, @@taylor/cat}
