@@ -69,6 +69,11 @@ C-XSC](http://www2.math.uni-wuppertal.de/~xsc/preprints/prep_05_4.pdf).
 * @taylor/disp
 * @taylor/display
 
+### Taylor functions
+
+* @taylor/plus
+* @taylor/minus
+
 ## Functions to be implemented
 
 ### Comparison
@@ -78,8 +83,6 @@ C-XSC](http://www2.math.uni-wuppertal.de/~xsc/preprints/prep_05_4.pdf).
 
 ### Taylor functions
 
-* @taylor/plus
-* @taylor/minus
 * @taylor/times
 * @taylor/rdivide
 * @taylor/ldivide

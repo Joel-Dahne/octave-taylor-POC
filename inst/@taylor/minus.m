@@ -1,4 +1,4 @@
-## Copyright 2014-2016 Joel Dahne
+## Copyright 2017 Joel Dahne
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -15,47 +15,60 @@
 
 ## -*- texinfo -*-
 ## @documentencoding UTF-8
-## -*- texinfo -*-
-## @documentencoding UTF-8
 ## @defop Method {@@taylor} minus (@var{X}, @var{Y})
-## @defopx Operator {@@taylor} {@var{X} - @var{Y}}
+## @defopx Operator {@@taylor} @var{X} - @var{Y}
 ##
-## Subract the taylor expansion @var{Y} to @var{X}
+## Subract the Taylor expansion @var{Y} from @var{X}.
 ##
 ## @example
 ## @group
-## x = taylor ([1, 0]);
-## y = taylor ([1, 2]);
-## x - y
-##   @result{} ans = [0, -2]
+##   x = taylor (infsupdec (4), 2);
+##   y = taylor (infsupdec (3), 2);
+##   x - y
+##   @result{} ans = [1]_com + [0]_com X + [0]_com X^2
 ## @end group
 ## @end example
-## @seealso{@@taylor/plus}
+## @seealso{@@taylor/plus, @@taylor/uminus}
 ## @end defop
 
 ## Author: Joel Dahne
-## Keywords: taylor arithmetic
-## Created: 2017-03-05
+## Keywords: taylor
+## Created: 2017-08-14
+
 function x = minus (x, y)
 
-  if (nargin ~= 2)
+  if (nargin != 2)
     print_usage ();
     return
   endif
 
-  if (not (isa (x, "taylor")))
-    x = taylor (x, length (y.coefs) - 1);
-  endif
-  if (not (isa (y, "taylor")))
-    y = taylor (y, length (x.coefs) - 1);
-  endif
-
-  if (length (x.coefs) ~= length (y.coefs))
-    printf ("%s and %s must be of the same degree", inputname (1),
-            inputname(2))
-    return
+  if (not (isa (x, "taylor")) && not (isa (y, "taylor")))
+    x = taylor (x, 1, "const");
+    y = taylor (y, 1, "const");
+  elseif (not (isa (x, "taylor")))
+    x = taylor (x, order (y), "const");
+  elseif (not (isa (y, "taylor")))
+    y = taylor (y, order (x), "const");
+  elseif (order (x) != order (y))
+    error ("Taylor expansions of different orders");
   endif
 
   x.coefs = x.coefs - y.coefs;
 
 endfunction
+
+%!test
+%! x = taylor (infsupdec ([5; 1]));
+%! y = taylor (infsupdec ([6; 1]));
+%! z = taylor (infsupdec ([-1; 0]));
+%! assert (isequal (x - y, z))
+%!test
+%! x = taylor (infsupdec (2), 2);
+%! y = infsupdec (3);
+%! z = taylor (infsupdec ([-1; 1; 0]));
+%! assert (isequal (x - y, z))
+%!test
+%! x = taylor (infsupdec (2), 2);
+%! y = 3;
+%! z = taylor (infsupdec ([-1; 1; 0]));
+%! assert (isequal (x - y, z))
