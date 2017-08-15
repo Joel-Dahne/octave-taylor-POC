@@ -107,7 +107,8 @@ function x = taylor (value, order, type)
         value.coefs = resize (value.coefs, s);
         x = value;
         return
-      elseif (isa (value, "infsup") || isnumeric (value))
+      elseif ((isa (value, "infsup") || isnumeric (value)) ...
+              && isindex (order + 1))
         ## Create a Taylor variable with the given order
         s = size (value);
         coefs = postpad (reshape (value, [1 s]), order + 1, 0, 1);
