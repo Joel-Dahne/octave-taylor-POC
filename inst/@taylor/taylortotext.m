@@ -75,7 +75,11 @@ function [s, isexact] = taylortotext (x, format)
   s = cell (size (x));
   if (isa (x.coefs, "infsup"))
     [intervals, isexact] = intervaltotext (x.coefs, format);
+    if (not (iscell (intervals)))
+      intervals = {intervals};
+    endif
   endif
+
 
   parts = prod (size (x.coefs) (2:end));
   partorder = order (x);
