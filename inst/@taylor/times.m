@@ -1,4 +1,4 @@
-## Copyright 2014-2016 Joel Dahne
+## Copyright 2017 Joel Dahne
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -17,51 +17,66 @@
 ## @documentencoding UTF-8
 ## @defop Method {@@taylor} times (@var{X}, @var{Y})
 ## @defopx Operator {@@taylor} {@var{X} .* @var{Y}}
-## 
-## Multiply the taylor expansions @var{X} and @var{Y}.
+##
+## Multiply the taylor expansion @var{X} with @var{Y}.
 ##
 ## @example
 ## @group
-## x = taylor ([2, 1, 0]);
-## y = taylor ([3, 2, 1]);
-## x .* y
-##   @result{} ans = []
+##   x = taylor (infsupdec (2), 2);
+##   y = taylor (infsupdec (3), 2);
+##   x .* y
+##   @result{} ans = [6]_com + [5]_com X + [1]_com X^2
 ## @end group
 ## @end example
 ## @seealso{@@times/rdivide}
 ## @end defop
 
 ## Author: Joel Dahne
-## Keywords: taylor arithmetic
-## Created: 2017-03-05
+## Keywords: taylor
+## Created: 2017-08-14
 
-function x = times (x, y)
+function result = times (x, y)
 
-  if (nargin ~= 2)
+  if (nargin != 2)
     print_usage ();
     return
   endif
 
-  if (not (isa (x, "taylor")))
-    x = taylor (x, length (y.coefs) - 1);
-  endif
-  if (not (isa (y, "taylor")))
-    y = taylor (y, length (x.coefs) - 1);
-  endif
-
-  if (length (x.coefs) ~= length (y.coefs))
-    printf ("%s and %s must be of the same degree\n", inputname (1),
-            inputname(2));
-    return
+  if (not (isa (x, "taylor")) && not (isa (y, "taylor")))
+    x = taylor (x, 1, "const");
+    y = taylor (y, 1, "const");
+  elseif (not (isa (x, "taylor")))
+    x = taylor (x, order (y), "const");
+  elseif (not (isa (y, "taylor")))
+    y = taylor (y, order (x), "const");
+  elseif (order (x) != order (y))
+    error ("Taylor expansions of different orders");
   endif
 
-  order = get_order (x);
-  prod_coefs = x.coefs (1) .* y.coefs (1);
-  prod_coefs = resize (prod_coefs, order + 1, 1);
-  
-  for k = [1:order]
-    prod_coefs (k+1) = dot (x.coefs (1:k+1), y.coefs (k+1:-1:1));
+  result = x;
+
+  ## FIXME: This could be improved if there were a function for
+  ## calculating the lower part of a convolution between x and y.
+  for k = 0:order (x)
+    result.coefs(k+1, :) = dot (x.coefs(1:k+1, :), y.coefs(k+1:-1:1, :), 1);
   endfor
 
-  x.coefs = prod_coefs;
 endfunction
+
+%!test
+%! x = taylor (infsupdec ([3; 2; 1]));
+%! y = x;
+%! z = taylor (infsupdec ([9; 12; 10]));
+%! assert (isequal (x .* y, z));
+%!test
+%! x = taylor (infsupdec ([1, 2; 3, 4; 5, 6]));
+%! y = taylor (infsupdec ([2, 3; 4, 5; 6, 7]));
+%! z = taylor (infsupdec ([2, 6; 10, 22; 28, 52]));
+%! assert (isequal (x .* y, z));
+%!test
+%! x = taylor (infsupdec (ones (3, 3, 3)), 2);
+%! y = x;
+%! m = infsupdec (ones (3, 3, 3, 3));
+%! m(2, :) = 2;
+%! z = taylor (m);
+%! assert (isequal (x .* y, z));
