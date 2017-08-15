@@ -1,4 +1,4 @@
-## Copyright 2014-2016 Joel Dahne
+## Copyright 2017 Joel Dahne
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -18,61 +18,65 @@
 ## @documentencoding UTF-8
 ## @defop Method {@@taylor} rdivide (@var{X}, @var{Y})
 ## @defopx Operator {@@taylor} {@var{X} ./ @var{Y}}
-## 
-## Divide the Taylor series @var{X} by @var{Y}.
+##
+## Divide the Taylor expansion @var{X} by @var{Y}.
 ##
 ## @example
 ## @group
-## x = taylor ([3, 1]);
-## y = taylor ([1, 2]);
-## x ./ y
-##   @result{} ans = []
+##   x = taylor (infsupdec (6), 2);
+##   y = taylor (infsupdec (2), 2);
+##   x ./ y
+##   @result{} ans = [3]_com + [-1]_com X + [0.5]_com X^2
 ## @end group
 ## @end example
-## @seealso{@@taylor/times}
+## @seealso{@@taylor/ldivide, @@taylor/times}
 ## @end defop
 
 ## Author: Joel Dahne
-## Keywords: taylor arithmetic
-## Created: 2017-03-05
+## Keywords: taylor
+## Created: 2017-08-15
 
 function result = rdivide (x, y)
 
-  if (nargin ~= 2)
+  if (nargin != 2)
     print_usage();
     return
   endif
 
-  if (not (isa (x, "taylor")))
-    x = taylor (x, length (y.coefs) - 1);
-  endif
-  if (not (isa (y, "taylor")))
-    y = taylor (y, length (x.coefs) - 1);
-  endif
-
-  if (length (x.coefs) ~= length (y.coefs))
-    printf ("%s and %s must be of the same degree", inputname (1),
-            inputname(2));
-    return
+  if (not (isa (x, "taylor")) && not (isa (y, "taylor")))
+    x = taylor (x, 1, "const");
+    y = taylor (y, 1, "const");
+  elseif (not (isa (x, "taylor")))
+    x = taylor (x, order (y), "const");
+  elseif (not (isa (y, "taylor")))
+    y = taylor (y, order (x), "const");
+  elseif (order (x) != order (y))
+    error ("Taylor expansions of different orders");
   endif
 
-  order = length (x.coefs);
+  result = x;
 
-  #if (isa (x.coefs, "infsup"))
-  #  div_coefs = infsup([]);
-  #else
-  #  div_coefs = [];
-  #endif
-
-  div_coefs = x.coefs (1) ./ y.coefs;
-  div_coefs (order) = 0;
-  
-  for k = [2:order]
-    div_coefs (k) = (x.coefs (k) - dot (div_coefs (1:k-1),
-                                        y.coefs (k:-1:2))) ...
-                    ./ (y.coefs (1));
+  for k = 0:order (x)
+    result.coefs(k+1, :) = (x.coefs(k+1, :) - ...
+                            dot (result.coefs(1:k, :), y.coefs(k+1:-1:2, :), 1)) ...
+                           ./y.coefs(1, :);
   endfor
 
-  result = taylor(div_coefs);
-  
 endfunction
+
+%!test
+%! x = taylor (infsupdec ([3; 2; 1]));
+%! y = x;
+%! z = taylor (infsupdec ([1; 0; 0]));
+%! assert (isequal (x ./ y, z));
+%!test
+%! x = taylor (infsupdec ([2, 6; 6, 4; 10, 7]));
+%! y = taylor (infsupdec ([2, 3; 4, 5; 6, 7]));
+%! z = taylor (infsupdec ([1, 2; 1, -2; 0, 1]));
+%! assert (isequal (x ./ y, z));
+%!test
+%! x = taylor (infsupdec (ones (3, 3, 3)), 2);
+%! y = x;
+%! m = infsupdec (ones (3, 3, 3));
+%! z = taylor (m, 2, "const");
+%! assert (isequal (x ./ y, z));
