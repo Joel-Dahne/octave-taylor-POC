@@ -38,13 +38,13 @@
 ##
 ## @example
 ## @group
-##   postpad (taylor ([1; 2], 2), 4, taylor (5, 2))
+##   postpad (taylor (infsupdec ([1; 2]), 2), 4, taylor (5, 2))
 ##   @result{} ans = 4×1 Taylor vector of order 2
 ##
-##      1 + 1X + 0X^2
-##      2 + 1X + 0X^2
-##      5 + 1X + 0X^2
-##      5 + 1X + 0X^2
+##      [1]_com + [1]_com X + [0]_com X^2
+##      [2]_com + [1]_com X + [0]_com X^2
+##      [5]_com + [1]_com X + [0]_com X^2
+##      [5]_com + [1]_com X + [0]_com X^2
 ##
 ## @end group
 ## @end example
