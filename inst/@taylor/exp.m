@@ -15,7 +15,6 @@
 
 ## -*- texinfo -*-
 ## @documentencoding UTF-8
-## @documentencoding UTF-8
 ## @defmethod {@@taylor} exp (@var{X})
 ##
 ## Compute the exponential function.

@@ -15,7 +15,6 @@
 
 ## -*- texinfo -*-
 ## @documentencoding UTF-8
-## @documentencoding UTF-8
 ## @defop Method {@@taylor} rdivide (@var{X}, @var{Y})
 ## @defopx Operator {@@taylor} {@var{X} ./ @var{Y}}
 ##
