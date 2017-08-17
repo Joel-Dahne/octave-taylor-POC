@@ -66,5 +66,5 @@ endfunction
 
 %!test
 %! x = taylor (infsupdec ([1, 1; 1, 1; 1, 0; 0, 0]));
-%! y = taylor (infsupdec ("0, 0; 1, 1; -1/2, 1/2; 1/3, -2/3"));
+%! y = taylor (infsupdec ("0, 0; 1, 1; 1/2, -1/2; -2/3, 1/3"));
 %! assert (isequal (log (x), y));
