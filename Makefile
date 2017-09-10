@@ -60,7 +60,7 @@ doctest:
 	$(OCTAVE) --no-gui --silent --path "inst/" \
 	  --eval 'pkg load doctest;' \
 	  --eval 'pkg load interval;' \
-	  --eval "targets = '$(shell (ls inst; ls src | $(GREP) .oct) | $(CUT) -f2 -d@ | $(CUT) -f1 -d.)';" \
+	  --eval "targets = '$(shell (ls inst) | $(CUT) -f2 -d@ | $(CUT) -f1 -d.)';" \
 	  --eval "targets = strsplit (targets, ' ');  doctest (targets);"
 
 
