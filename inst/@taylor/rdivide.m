@@ -53,12 +53,24 @@ function result = rdivide (x, y)
     error ("Taylor expansions of different orders");
   endif
 
-  result = x;
+  idx.type = "()";
+  idx.subs(1:order (x) + 2) = {":"};
+  idx.subs(1) = 1;
 
-  for k = 0:order (x)
-    result.coefs(k+1, :) = (x.coefs(k+1, :) - ...
-                            dot (result.coefs(1:k, :), y.coefs(k+1:-1:2, :), 1)) ...
-                           ./y.coefs(1, :);
+  result = taylor (postpad (subsref (x.coefs, idx)./subsref (y.coefs, idx), ...
+                            order (x) + 1, 0, 1));
+
+  idxx  = idx;
+  idxy1 = idx;
+  idxy2 = idx;
+  for k = 1:order (x)
+    idx.subs(1) = k + 1;
+    idxx.subs(1) = 1:k;
+    idxy1.subs(1) = k+1:-1:2;
+    result.coefs = subsasgn (result.coefs, idx, ...
+                             (subsref (x.coefs, idx) - ...
+                              dot (subsref (result.coefs, idxx), subsref (y.coefs, idxy1), 1)) ...
+                             ./subsref (y.coefs, idxy2));
   endfor
 
 endfunction

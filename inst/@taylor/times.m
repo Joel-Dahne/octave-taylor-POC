@@ -53,12 +53,26 @@ function result = times (x, y)
     error ("Taylor expansions of different orders");
   endif
 
-  result = x;
+  idx.type = "()";
+  idx.subs(1:order (x) + 2) = {":"};
+  idx.subs(1) = 1;
+
+  result = taylor (postpad (subsref (x.coefs, idx).*subsref (y.coefs, idx), ...
+                            order (x) + 1, 0, 1));
+
 
   ## FIXME: This could be improved if there were a function for
   ## calculating the lower part of a convolution between x and y.
-  for k = 0:order (x)
-    result.coefs(k+1, :) = dot (x.coefs(1:k+1, :), y.coefs(k+1:-1:1, :), 1);
+  idxx  = idx;
+  idxy = idx;
+
+  for k = 1:order (x)
+    idx.subs(1) = k + 1;
+    idxx.subs(1) = 1:k+1;
+    idxy.subs(1) = k+1:-1:1;
+    result.coefs = subsasgn (result.coefs, idx, ...
+                             dot (subsref (x.coefs, idxx), ...
+                                  subsref (y.coefs, idxy), 1));
   endfor
 
 endfunction
