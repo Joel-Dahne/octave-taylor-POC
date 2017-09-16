@@ -69,13 +69,6 @@ C-XSC](http://www2.math.uni-wuppertal.de/~xsc/preprints/prep_05_4.pdf).
 * @taylor/disp
 * @taylor/display
 
-### Taylor functions
-
-* @taylor/plus
-* @taylor/minus
-
-## Functions to be implemented
-
 ### Comparison
 
 * @taylor/eq
@@ -83,22 +76,29 @@ C-XSC](http://www2.math.uni-wuppertal.de/~xsc/preprints/prep_05_4.pdf).
 
 ### Taylor functions
 
+* @taylor/plus
+* @taylor/minus
 * @taylor/times
 * @taylor/rdivide
 * @taylor/ldivide
+* @taylor/sqr
+* @taylor/exp
+* @taylor/ln
+* @taylor/sin
+* @taylor/cos
+
+## Functions to be implemented
+
+### Taylor functions
+
 * @taylor/rsqrt
 * @taylor/sqrt1px2
 * @taylor/sqrtp1m1
 * @taylor/sqrt1mx2
 * @taylor/sqrtx2m1
-* @taylor/sqr
 * @taylor/pow
-* @taylor/exp
 * @taylor/expm1
-* @taylor/ln
 * @taylor/lnp1
-* @taylor/sin
-* @taylor/cos
 * @taylor/tan
 * @taylor/cot
 * @taylor/sinh
