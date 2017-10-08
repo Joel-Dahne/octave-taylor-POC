@@ -159,10 +159,38 @@ will create a function with `f(x0) = [5]_com`, `f'(x0) = [3]_com` and
 ### Computing with Taylor expansions
 
 The Taylor package overloads most numerical functions and Taylor
-expansions can thus be used in computation much like ordinary
+expansions can thus be used in computations much like ordinary
 intervals or numbers.
 
-The implementation of numerical functions is not yet completed.
+For example we can calculate the third order Taylor expansion for the
+function `f(x) = 2x + 1` at `x = 2`
+
+``` matlab
+> f = @(x) 2.*x + 1;
+> x = taylor (infsupdec (2), 3)
+x = [2]_com + [1]_com X + [0]_com X^2 + [0]_com X^3
+> y = f (x)
+y = [5]_com + [2]_com X + [0]_com X^2 + [0]_com X^3
+```
+
+so the value is 5, the first derivative 2 and all other
+derivatives 0. We can also take a more complicated function like `g(x)
+= log(x*exp(sin(x)))` and evaluate the third order Taylor expansion
+at `x = 5`
+
+``` matlab
+> g = @(x) log(x.*exp(sin(x)));
+> x = taylor (infsupdec (5), 3)
+x = [5]_com + [1]_com X + [0]_com X^2 + [0]_com X^3
+> y = g (x)
+y = [0.65051, 0.65052]_com + [0.48366, 0.48367]_com X + [0.45946, 0.45947]_com X^2 + [-0.044611, -0.04461]_com X^3
+```
+
+So the value is enclosed in `[0.65051, 0.65052]` and the derivative in
+`[0.48366, 0.48367]`. For the higher order derivatives we have to
+multiply with the appropriate factorial, the second derivative is
+enclosed in `[0.91892, 0.91893]` and the third in `[-0.26767,
+-0.26766]`.
 
 ## Authors, License, Credits
 
