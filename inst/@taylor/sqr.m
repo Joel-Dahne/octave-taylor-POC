@@ -43,16 +43,32 @@ function result = sqr (x)
 
   result.coefs(1, :) = x.coefs(1, :).^2;
   for k = 1:order (x)
-    m = (k+1)/2;
+    m = floor ((k+1)/2);
     result.coefs(k+1, :) = 2.*dot (x.coefs(1:m, :), x.coefs(k + 2 - (1:m)), 1);
     if (mod (k, 2) == 0)
-      result.coefs(k+1, :) += x.coefs(m + 0.5, :);
+      result.coefs(k+1, :) += x.coefs(m + 1, :).^2;
     endif
   endfor
 
 endfunction
 
-%!assert (isequal (sqr (taylor (infsupdec (2), 2)), taylor (infsupdec ([4; 4; 1]))))
-%!assert (isequal (sqr (taylor (infsupdec ([0; 1; 1; 0; 0; 0]))), taylor (infsupdec ("0; 0; 1; 2; 1; 0"))))
-%!assert (isequal (sqr (taylor (infsupdec (-2, 2), 3)), taylor (infsupdec ([0; -4; 1; 0], [4; 4; 1; 0]))))
-%!assert (isequal (sqr (taylor (infsupdec ([1;2]), 2)), taylor (infsupdec ([1, 4; 2, 4; 1, 1]))))
+%!test
+%! x = taylor (infsupdec (2), 2);
+%! y = taylor (infsupdec ([4; 4; 1]));
+%! assert (isequal (sqr (x), y))
+%!test
+%! x = taylor (infsupdec ([0; 1; 1; 0; 0; 0]));
+%! y = taylor (infsupdec ("0; 0; 1; 2; 1; 0"));
+%! assert (isequal (sqr (x), y))
+%!test
+%! x = taylor (infsupdec (-2, 2), 3);
+%! y = taylor (infsupdec ([0; -4; 1; 0], [4; 4; 1; 0]));
+%! assert (isequal (sqr (x), y))
+%!test
+%! x = taylor (infsupdec ([1;2]), 2);
+%! y = taylor (infsupdec ([1, 4; 2, 4; 1, 1]));
+%! assert (isequal (sqr (x), y))
+%!test
+%! x = taylor (infsupdec ([1; -1; -1; 1; 1]));
+%! y = taylor (infsupdec ([1; -2; -1; 4; 1]));
+%! assert (isequal (sqr (x), y))
