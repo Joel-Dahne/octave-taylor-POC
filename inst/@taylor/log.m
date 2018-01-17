@@ -46,14 +46,7 @@ function result = log (x)
     error ("log only defined for non-zero values")
   endif
 
-  result = x;
-
-  result.coefs(1, :) = log (x.coefs (1, :));
-  for k = 1:order (x)
-    result.coefs(k+1, :) = (x.coefs(k+1, :) - ...
-                            dot ((1:k-1)'.*result.coefs(2:k, :), ...
-                                 x.coefs(k:-1:2, :), 1)./k)./x.coefs(1, :);
-  endfor
+  result = recursionmethod (x, x, @(x) log(x));
 
 endfunction
 
